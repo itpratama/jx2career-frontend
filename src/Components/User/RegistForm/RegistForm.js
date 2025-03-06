@@ -1088,124 +1088,146 @@ export default function RegistForm() {
                                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                             >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-6 pb-6 pt-6 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-6xl sm:p-8">
+                                <Dialog.Panel className="relative transform overflow-hidden rounded-xl bg-white px-4 pb-6 pt-6 text-left shadow-xl transition-all w-full max-w-full sm:my-8 sm:max-w-6xl sm:p-8">
                                     <div>
-                                        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                                            <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
+                                        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-orange-100">
+                                            <CheckIcon className="h-7 w-7 text-orange-500" aria-hidden="true" />
                                         </div>
-                                        <div className="mt-3 text-center sm:mt-5">
-                                            <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                        <div className="mt-4 text-center">
+                                            <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-800">
                                                 Registrasi Berhasil
                                             </Dialog.Title>
                                             <div className="mt-2">
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-sm text-gray-600">
                                                     Mohon lengkapi formulir tambahan di bawah ini untuk membantu kami memahami potensi Anda secara lebih mendalam.
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="mt-6">
+                                    <div className="mt-8">
                                         <label className="block text-sm font-medium text-gray-700 mb-3">Riwayat Pekerjaan (Jika ada)</label>
-                                        <table className="min-w-full border-collapse border border-gray-300">
-                                            <thead>
-                                                <tr className="bg-gray-100">
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Nama Perusahaan</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Departemen</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Jabatan</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Mulai Kerja</th>
-                                                    <th className="border border-gray-300 px-4 py-2 text-left text-sm font-medium text-gray-700">Terakhir Kerja</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {riwayatPekerjaanRows.map((row, index) => (
-                                                    <tr key={index}>
-                                                        <td className="border border-gray-300 px-4 py-2">
-                                                            <input
-                                                                type="text"
-                                                                className="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                                                                value={row.NamaPerusahaan || ""}
-                                                                onChange={(e) =>
-                                                                    handleRiwayatPekerjaanChange(index, "NamaPerusahaan", e.target.value)
-                                                                }
-                                                            />
-                                                        </td>
-                                                        <td className="border border-gray-300 px-4 py-2">
-                                                            <input
-                                                                type="text"
-                                                                className="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                                                                value={row.Departemen || ""}
-                                                                onChange={(e) =>
-                                                                    handleRiwayatPekerjaanChange(index, "Departemen", e.target.value)
-                                                                }
-                                                            />
-                                                        </td>
-                                                        <td className="border border-gray-300 px-4 py-2">
-                                                            <input
-                                                                type="text"
-                                                                className="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                                                                value={row.Jabatan || ""}
-                                                                onChange={(e) =>
-                                                                    handleRiwayatPekerjaanChange(index, "Jabatan", e.target.value)
-                                                                }
-                                                            />
-                                                        </td>
-                                                        <td className="border border-gray-300 px-4 py-2">
-                                                            <input
-                                                                type="date"
-                                                                className="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                                                                value={row.MulaiKerja || ""}
-                                                                onChange={(e) =>
-                                                                    handleRiwayatPekerjaanChange(index, "MulaiKerja", e.target.value)
-                                                                }
-                                                            />
-                                                        </td>
-                                                        <td className="border border-gray-300 px-4 py-2">
-                                                            <input
-                                                                type="date"
-                                                                className="w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 text-sm"
-                                                                value={row.TerakhirKerja || ""}
-                                                                onChange={(e) =>
-                                                                    handleRiwayatPekerjaanChange(index, "TerakhirKerja", e.target.value)
-                                                                }
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
+                                        <div className="overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
+                                            <div className="inline-block min-w-full py-2 align-middle px-4 sm:px-6 lg:px-8">
+                                                <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
+                                                    <table className="min-w-full divide-y divide-orange-100">
+                                                        <thead className="bg-orange-50">
+                                                            <tr>
+                                                                <th scope="col" className="py-3 pl-4 pr-3 text-left text-sm font-medium text-gray-700 sm:pl-6">Nama Perusahaan</th>
+                                                                <th scope="col" className="px-3 py-3 text-left text-sm font-medium text-gray-700">Departemen</th>
+                                                                <th scope="col" className="px-3 py-3 text-left text-sm font-medium text-gray-700">Jabatan</th>
+                                                                <th scope="col" className="px-3 py-3 text-left text-sm font-medium text-gray-700">Mulai Kerja</th>
+                                                                <th scope="col" className="px-3 py-3 text-left text-sm font-medium text-gray-700">Terakhir Kerja</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody className="divide-y divide-orange-100 bg-white">
+                                                            {riwayatPekerjaanRows.map((row, index) => (
+                                                                <tr key={index}>
+                                                                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm sm:pl-6">
+                                                                        <input
+                                                                            type="text"
+                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
+                                                                            value={row.NamaPerusahaan || ""}
+                                                                            onChange={(e) =>
+                                                                                handleRiwayatPekerjaanChange(index, "NamaPerusahaan", e.target.value)
+                                                                            }
+                                                                        />
+                                                                    </td>
+                                                                    <td className="whitespace-nowrap px-3 py-3 text-sm">
+                                                                        <input
+                                                                            type="text"
+                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
+                                                                            value={row.Departemen || ""}
+                                                                            onChange={(e) =>
+                                                                                handleRiwayatPekerjaanChange(index, "Departemen", e.target.value)
+                                                                            }
+                                                                        />
+                                                                    </td>
+                                                                    <td className="whitespace-nowrap px-3 py-3 text-sm">
+                                                                        <input
+                                                                            type="text"
+                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
+                                                                            value={row.Jabatan || ""}
+                                                                            onChange={(e) =>
+                                                                                handleRiwayatPekerjaanChange(index, "Jabatan", e.target.value)
+                                                                            }
+                                                                        />
+                                                                    </td>
+                                                                    <td className="whitespace-nowrap px-3 py-3 text-sm">
+                                                                        <input
+                                                                            type="date"
+                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
+                                                                            value={row.MulaiKerja || ""}
+                                                                            onChange={(e) =>
+                                                                                handleRiwayatPekerjaanChange(index, "MulaiKerja", e.target.value)
+                                                                            }
+                                                                        />
+                                                                    </td>
+                                                                    <td className="whitespace-nowrap px-3 py-3 text-sm">
+                                                                        <input
+                                                                            type="date"
+                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
+                                                                            value={row.TerakhirKerja || ""}
+                                                                            onChange={(e) =>
+                                                                                handleRiwayatPekerjaanChange(index, "TerakhirKerja", e.target.value)
+                                                                            }
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            ))}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <button
                                             type="button"
-                                            className="mt-2 inline-flex items-center text-indigo-600 hover:text-indigo-800"
+                                            className="mt-3 inline-flex items-center text-orange-500 hover:text-orange-600 text-sm font-medium"
                                             onClick={addRow}
                                         >
                                             <span className="mr-2">+</span> Tambah Baris
                                         </button>
                                     </div>
-                                    <div className="mt-6">
+                                    <div className="mt-8">
                                         <div className="mb-4">
-                                            <label className="block text-sm font-medium text-gray-700">Upload Dokumen Ijazah - CV - Paklaring - Sertifikat</label>
-                                            <input
-                                                type="file"
-                                                className="mt-1 block w-full text-sm text-gray-500"
-                                                accept=".pdf"
-                                                onChange={(e) => handleFileChangeDokumenTambahan(e, 'dokumen')}
-                                            />
+                                            <label className="block text-sm font-medium text-gray-700 mb-2">Upload Dokumen Ijazah - CV - Paklaring - Sertifikat</label>
+                                            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-orange-100 border-dashed rounded-lg">
+                                                <div className="space-y-1 text-center">
+                                                    <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
+                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                                                    </svg>
+                                                    <div className="flex flex-col sm:flex-row justify-center text-sm text-gray-600">
+                                                        <label htmlFor="file-upload" className="relative cursor-pointer rounded-md font-medium text-orange-500 hover:text-orange-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-orange-400">
+                                                            <span>Upload file</span>
+                                                            <input
+                                                                id="file-upload"
+                                                                name="file-upload"
+                                                                type="file"
+                                                                className="sr-only"
+                                                                accept=".pdf"
+                                                                onChange={(e) => handleFileChangeDokumenTambahan(e, 'dokumen')}
+                                                            />
+                                                        </label>
+                                                        <p className="pl-1 mt-1 sm:mt-0">atau drag dan drop</p>
+                                                    </div>
+                                                    <p className="text-xs text-gray-500">PDF Maks 2MB</p>
+                                                </div>
+                                            </div>
                                             {fileErrorDokumenTambahan && (
                                                 <p className="text-sm text-red-600 mt-2">{fileErrorDokumenTambahan}</p>
                                             )}
                                         </div>
                                     </div>
-                                    <div className="mt-6 flex justify-end space-x-4">
+                                    <div className="mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                                         <button
                                             type="button"
-                                            className="inline-flex justify-center rounded-md bg-gray-500 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-500"
+                                            className="w-full sm:w-auto px-5 py-2.5 rounded-md shadow-sm transition-all duration-200 font-medium text-sm bg-white text-gray-700 border border-orange-200 hover:bg-orange-50"
                                             onClick={handleLewati}
                                         >
                                             Lewati
                                         </button>
                                         <button
                                             type="button"
-                                            className="inline-flex justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            className="w-full sm:w-auto px-5 py-2.5 rounded-md shadow-sm transition-all duration-200 font-medium text-sm bg-gradient-to-r from-orange-400 to-orange-500 text-white hover:from-orange-500 hover:to-orange-600"
                                             onClick={handleSubmitDokumenTambahan}
                                         >
                                             Kirim
@@ -1217,6 +1239,7 @@ export default function RegistForm() {
                     </div>
                 </Dialog>
             </Transition.Root>
+
             <Transition.Root show={openerrorMessage} as={Fragment}>
                 <Dialog as="div" className="relative z-10" onClose={setOpen}>
                     <Transition.Child
@@ -1242,32 +1265,32 @@ export default function RegistForm() {
                                 leaveFrom="opacity-100 translate-y-0 sm:scale-100"
                                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                             >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                                <Dialog.Panel className="relative transform overflow-hidden rounded-xl bg-white px-6 pb-6 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                                     <div>
-                                        <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${errorMessage ? 'bg-red-100' : 'bg-green-100'}`}>
+                                        <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full ${errorMessage ? 'bg-red-100' : 'bg-orange-100'}`}>
                                             {errorMessage ? (
-                                                <svg className="h-6 w-6 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <svg className="h-7 w-7 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             ) : (
-                                                <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
+                                                <CheckIcon className="h-7 w-7 text-orange-500" aria-hidden="true" />
                                             )}
                                         </div>
-                                        <div className="mt-3 text-center sm:mt-5">
-                                            <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                        <div className="mt-4 text-center">
+                                            <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-800">
                                                 {errorMessage ? 'Registrasi Gagal' : 'Registrasi Berhasil'}
                                             </Dialog.Title>
                                             <div className="mt-2">
-                                                <p className="text-sm text-gray-500">
+                                                <p className="text-sm text-gray-600">
                                                     {errorMessage || 'Registrasi berhasil dilakukan. Silakan cek email untuk informasi lebih lanjut.'}
                                                 </p>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="mt-5 sm:mt-6">
+                                    <div className="mt-6">
                                         <button
                                             type="button"
-                                            className="inline-flex w-full justify-center rounded-md bg-gray-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                            className="inline-flex w-full justify-center rounded-md bg-gradient-to-r from-orange-400 to-orange-500 px-4 py-3 text-sm font-medium text-white shadow-sm hover:from-orange-500 hover:to-orange-600 transition-all duration-200"
                                             onClick={() => {
                                                 setOpensetErrorMessage(false);
                                                 if (!errorMessage) {
