@@ -19,7 +19,7 @@ export default function JobVacancy() {
         const fetchJobVacancies = async () => {
             try {
                 const nik = localStorage.getItem("nikJX2Career"); // Ambil NIK dari localStorage
-                const response = await axios.post('http://localhost:4005/getJobVacanciesUser', {
+                const response = await axios.post('http://153.92.5.18:4005/getJobVacanciesUser', {
                     NIK: nik, // Kirim NIK ke API
                 });
                 const data = response.data;
@@ -62,7 +62,7 @@ export default function JobVacancy() {
         }
 
         try {
-            const response = await axios.post('http://localhost:4005/addCandidateApplied', {
+            const response = await axios.post('http://153.92.5.18:4005/addCandidateApplied', {
                 NIK: nik,
                 JobId: jobId
             });
