@@ -3,7 +3,7 @@ import axios from 'axios';
 const handleDownloadAllDocument = async (filters) => {
     try {
         const response = await axios.post(
-            'http://localhost:4005/downloadDocuments', // Sesuaikan dengan URL API Anda
+            'http://153.92.5.18:4005/downloadDocuments', // Sesuaikan dengan URL API Anda
             {
                 JobName: filters.jobName,
                 JobCategory: filters.jobCategory,

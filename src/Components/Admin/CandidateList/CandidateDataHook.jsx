@@ -23,7 +23,7 @@ const CandidateDataHook = () => {
     const fetchData = async () => {
         setLoading(true);
         try {
-            const response = await axios.get('http://localhost:4005/getCandidates');
+            const response = await axios.get('http://153.92.5.18:4005/getCandidates');
             const dataArray = Object.values(response.data); // Convert object to array
             setData(dataArray);
             setFilteredData(dataArray); // Initialize filteredData with all data

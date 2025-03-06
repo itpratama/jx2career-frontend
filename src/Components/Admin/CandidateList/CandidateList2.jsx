@@ -67,7 +67,7 @@ const CandidateList2 = () => {
     const handleDownloadDocumentByNIK = async (nik) => {
         try {
             // Kirim permintaan ke API download dengan metode POST
-            const response = await fetch("http://localhost:4005/downloadFile", {
+            const response = await fetch("http://153.92.5.18:4005/downloadFile", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -105,7 +105,7 @@ const CandidateList2 = () => {
     const handleViewDocument = (nik) => {
         try {
             // URL endpoint API viewFile dengan query parameter
-            const url = `http://localhost:4005/viewFile?nik=${nik}`;
+            const url = `http://153.92.5.18:4005/viewFile?nik=${nik}`;
 
             // Membuka dokumen di tab baru
             window.open(url, "_blank");

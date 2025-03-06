@@ -3,7 +3,7 @@ import axios from 'axios';
 const handleUpdateSubStatus = async (NIK, JobId, newStatus, setFilteredData) => {
     try {
         // Kirim permintaan PUT ke API untuk memperbarui status
-        await axios.put('http://localhost:4005/updateSubStatusCandidate', {
+        await axios.put('http://153.92.5.18:4005/updateSubStatusCandidate', {
             NIK,
             JobId,
             Sub_Status: newStatus,

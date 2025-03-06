@@ -20,7 +20,7 @@ export default function CandidateList() {
   const fetchData = async (currentFilters) => {
     try {
       const queryParams = new URLSearchParams(currentFilters).toString();
-      const response = await axios.get(`http://localhost:4005/getCandidates?${queryParams}`);
+      const response = await axios.get(`http://153.92.5.18:4005/getCandidates?${queryParams}`);
       setCandidates(response.data);
 
       // Update dropdown options dynamically
@@ -55,7 +55,7 @@ export default function CandidateList() {
     try {
       const queryParams = new URLSearchParams(filters).toString();
 
-      const response = await fetch(`http://localhost:4005/exportToXlsx?${queryParams}`, {
+      const response = await fetch(`http://153.92.5.18:4005/exportToXlsx?${queryParams}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -79,7 +79,7 @@ export default function CandidateList() {
 
   const handleUpdateStatus = async (NIK, JobId, newStatus) => {
     try {
-      await axios.put('http://localhost:4005/updateStatusCandidate', {
+      await axios.put('http://153.92.5.18:4005/updateStatusCandidate', {
         NIK,
         JobId,
         Status: newStatus,
@@ -100,7 +100,7 @@ export default function CandidateList() {
 
   const handleUpdateSubStatus = async (NIK, JobId, newStatus) => {
     try {
-      await axios.put('http://localhost:4005/updateSubStatusCandidate', {
+      await axios.put('http://153.92.5.18:4005/updateSubStatusCandidate', {
         NIK,
         JobId,
         Sub_Status: newStatus,
@@ -122,7 +122,7 @@ export default function CandidateList() {
   const handleDownloadDocument = async (nik) => {
     try {
       // Kirim permintaan ke API download dengan metode POST
-      const response = await fetch("http://localhost:4005/downloadFile", {
+      const response = await fetch("http://153.92.5.18:4005/downloadFile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -160,7 +160,7 @@ export default function CandidateList() {
   const downloadAllDocuments = async () => {
     try {
       const queryParams = new URLSearchParams(filters).toString();
-      const response = await fetch(`http://localhost:4005/downloadDocuments?${queryParams}`, {
+      const response = await fetch(`http://153.92.5.18:4005/downloadDocuments?${queryParams}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -191,7 +191,7 @@ export default function CandidateList() {
   const handleViewDocument = (nik) => {
     try {
       // URL endpoint API viewFile dengan query parameter
-      const url = `http://localhost:4005/viewFile?nik=${nik}`;
+      const url = `http://153.92.5.18:4005/viewFile?nik=${nik}`;
 
       // Membuka dokumen di tab baru
       window.open(url, "_blank");

@@ -3,7 +3,7 @@ import axios from 'axios';
 const handleDownloadAllExcel = async (filters) => {
     try {
         const response = await axios.post(
-            'http://localhost:4005/exportToXlsx',
+            'http://153.92.5.18:4005/exportToXlsx',
             {
                 JobName: filters.jobName,
                 JobCategory: filters.jobCategory,
