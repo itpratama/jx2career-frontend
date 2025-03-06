@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
 import Logo from "../../../Assets/img/PratamaLogowhite.png";
-import Background from "../../../Assets/img/Nike5.mov";
+import Background from "../../../Assets/img/NikeAdss.mp4";
 
 const LoginAdmin = () => {
   const [username, setUsername] = useState('');
