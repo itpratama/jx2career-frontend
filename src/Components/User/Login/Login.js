@@ -1,134 +1,122 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import Logo from "../../../Assets/img/PratamaLogowhite.png";
-import Background from "../../../Assets/img/NikeAdss.mp4";
+import Logo from "../../../Assets/img/PratamaLogoBlack.png";
 
 const Login = () => {
   const [nik, setNik] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsMobile(window.matchMedia("(max-width: 768px)").matches);
+    };
+  
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+  
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+  
   // Handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      // Make POST request to the backend API
       const response = await axios.post('http://153.92.5.18:4005/login', {
         nik,
         password,
       });
-      console.log(response.data);
 
-      // If login is successful, save token and nik to localStorage
-      const { user } = response.data;
-      const { token } = response.data;
+      const { user, token } = response.data;
       Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'Strict' });
-      localStorage.setItem('nikJX2Career', user.id); // Save NIK
+      localStorage.setItem('nikJX2Career', user.id);
 
-      window.location.href = "/";
+      // Using navigate instead of window.location.href
+      navigate("/");
     } catch (err) {
       setError('Invalid NIK or password');
     }
   };
 
+  // Conditional background class based on device
+  const backgroundClass = isMobile 
+    ? "bg-gradient-to-br from-orange-200/70 via-orange-100/60 to-orange-50/50" 
+    : "bg-gradient-to-br from-orange-300 via-orange-200 to-orange-100";
+
   return (
-    <>
-      <div className="bg-gray-200">
-        <div className="flex justify-center items-center h-screen">
-          {/* Video Background */}
-          <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
-            <video
-              autoPlay
-              loop
-              muted
-              className="absolute z-0 w-auto min-w-full min-h-full max-w-none"
-            >
-              <source src={Background} type="video/mp4" />
-            </video>
-            <div className="absolute top-0 left-0 w-full h-full bg-gray-200 bg-opacity-10"></div>
-          </div>
+    <div className={`min-h-screen flex items-center justify-center ${backgroundClass} px-4 sm:px-6 lg:px-8`}>
+      {/* Login Form Container - Card for desktop, no card for mobile */}
+      <div className={`relative z-10 w-full ${isMobile ? 'max-w-full p-6' : 'max-w-xl bg-white p-12 rounded-xl shadow-lg border border-orange-100'}`}>
+        <div className="text-center mb-8">
+          <img className="mx-auto h-24 w-64" src={Logo} alt="Your Company" />
+          <h2 className={`mt-4 ${isMobile ? 'text-gray-800' : 'text-gray-800'} text-2xl font-bold`}>Sign in to your account</h2>
+          <p className="mt-2 text-orange-500 text-sm">Enter your credentials to continue</p>
+        </div>
 
-          {/* Centered Form */}
-          <div className="relative z-10 flex items-center w-full max-w-xl px-8 mx-auto">
-            <div className="bg-white bg-opacity-40 rounded-lg shadow-lg p-10 w-full">
-              <div className="text-center mb-8">
-                <img
-                  className="mx-auto"
-                  src={Logo}
-                  alt="Your Company"
-                />
-              </div>
-
-              <form onSubmit={handleLogin}>
-                {/* NIK */}
-                <div className="mb-6">
-                  <label
-                    htmlFor="nik"
-                    className="block mb-2 text-sm text-gray-100 font-semibold"
-                  >
-                    NIK
-                  </label>
-                  <input
-                    type="text"
-                    id="nik"
-                    value={nik}
-                    onChange={(e) => setNik(e.target.value)}
-                    placeholder="Enter your NIK"
-                    className="block w-full px-4 py-3 bg-gray-100 text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-400 focus:border-blue-400"
-                    required
-                  />
-                </div>
-
-                {/* Password */}
-                <div className="mb-6">
-                  <label
-                    htmlFor="password"
-                    className="block mb-2 text-sm text-gray-100 font-semibold"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Password"
-                    className="block w-full px-4 py-3 bg-gray-100 text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-400 focus:border-blue-400"
-                    required
-                  />
-                </div>
-
-                {error && <p className="text-red-500 text-center">{error}</p>}
-
-                <div className="mt-6">
-                  <button
-                    type="submit"
-                    className="w-full px-4 py-3 tracking-wide text-white transition-colors duration-200 transform bg-gray-800 rounded-lg hover:bg-gray-400 focus:outline-none hover:bg-gray-700 focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-                  >
-                    Sign in
-                  </button>
-                  <div className="mt-4 text-center">
-                    <p className="text-gray-100">
-                      Belum punya akun?{" "}
-                      <a
-                        href="/RegistForm"
-                        className="text-gray-100 hover:underline font-medium"
-                      >
-                        Daftar Sekarang
-                      </a>
-                    </p>
-                  </div>
-                </div>
-              </form>
+        <form onSubmit={handleLogin} className="space-y-6">
+          {/* NIK Input */}
+          <div>
+            <label htmlFor="nik" className={`block text-sm font-medium ${isMobile ? 'text-gray-700' : 'text-gray-700'}`}>
+              NIK
+            </label>
+            <div className="mt-1 relative rounded-md shadow-sm">
+              <input
+                type="text"
+                id="nik"
+                value={nik}
+                onChange={(e) => setNik(e.target.value)}
+                placeholder="Enter your NIK"
+                className="block w-full rounded-md bg-white border border-orange-200 text-gray-900 py-3 px-4 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
+                required
+              />
             </div>
           </div>
-        </div>
+
+          {/* Password Input */}
+          <div>
+            <label htmlFor="password" className={`block text-sm font-medium ${isMobile ? 'text-gray-700' : 'text-gray-700'}`}>
+              Password
+            </label>
+            <div className="mt-1 relative rounded-md shadow-sm">
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                className="block w-full rounded-md bg-white border border-orange-200 text-gray-900 py-3 px-4 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
+                required
+              />
+            </div>
+          </div>
+
+          {error && <p className="text-red-500 text-center bg-white px-2 py-1 rounded">{error}</p>}
+
+          {/* Login Button */}
+          <div>
+            <button
+              type="submit"
+              className="w-full bg-gradient-to-r from-orange-400 to-orange-500 text-white py-3 px-4 rounded-md hover:from-orange-500 hover:to-orange-600 focus:ring-2 focus:ring-orange-300 focus:outline-none transition-all duration-200 font-medium"
+            >
+              Sign in
+            </button>
+          </div>
+        </form>
+
+        {/* Register Link */}
+        <p className={`mt-8 text-center text-sm ${isMobile ? 'text-gray-700' : 'text-gray-600'}`}>
+          Not a member?{' '}
+          <a onClick={() => navigate("/RegistForm")} className="text-orange-500 hover:text-orange-600 font-medium cursor-pointer transition-all duration-200">
+            Sign up now
+          </a>
+        </p>
       </div>
-    </>
+    </div>
   );
 };
 
