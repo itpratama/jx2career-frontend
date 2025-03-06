@@ -10,18 +10,28 @@ const Login = () => {
   const [error, setError] = useState('');
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const navigate = useNavigate();
+  const [showMessage, setShowMessage] = useState(false);
+
+  const handleChange = (e) => {
+    let value = e.target.value.replace(/\D/g, ""); // Hanya angka
+    if (value.length > 16) {
+      value = value.slice(0, 16); // Batasi hanya 16 karakter
+    }
+    setNik(value);
+    setShowMessage(value.length > 0 && value.length !== 16);
+  };
 
   useEffect(() => {
     const checkScreenSize = () => {
       setIsMobile(window.matchMedia("(max-width: 768px)").matches);
     };
-  
+
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
-  
+
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
-  
+
   // Handle form submission
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -44,8 +54,8 @@ const Login = () => {
   };
 
   // Conditional background class based on device
-  const backgroundClass = isMobile 
-    ? "bg-gradient-to-br from-orange-200/70 via-orange-100/60 to-orange-50/50" 
+  const backgroundClass = isMobile
+    ? "bg-gradient-to-br from-orange-200/70 via-orange-100/60 to-orange-50/50"
     : "bg-gradient-to-br from-orange-300 via-orange-200 to-orange-100";
 
   return (
@@ -61,7 +71,10 @@ const Login = () => {
         <form onSubmit={handleLogin} className="space-y-6">
           {/* NIK Input */}
           <div>
-            <label htmlFor="nik" className={`block text-sm font-medium ${isMobile ? 'text-gray-700' : 'text-gray-700'}`}>
+            <label
+              htmlFor="nik"
+              className={`block text-sm font-medium ${isMobile ? "text-gray-700" : "text-gray-700"}`}
+            >
               NIK
             </label>
             <div className="mt-1 relative rounded-md shadow-sm">
@@ -69,12 +82,16 @@ const Login = () => {
                 type="text"
                 id="nik"
                 value={nik}
-                onChange={(e) => setNik(e.target.value)}
+                onChange={handleChange}
                 placeholder="Enter your NIK"
                 className="block w-full rounded-md bg-white border border-orange-200 text-gray-900 py-3 px-4 focus:ring-orange-500 focus:border-orange-500 transition-all duration-200"
+                maxLength={16} // Batasi input di level HTML juga
                 required
               />
             </div>
+            {showMessage && (
+              <p className="text-red-500 text-xs mt-1">NIK harus 16 angka</p>
+            )}
           </div>
 
           {/* Password Input */}
