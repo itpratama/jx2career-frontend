@@ -26,7 +26,7 @@ export default function UserList() {
   useEffect(() => {
     const fetchInitialData = async () => {
       try {
-        const response = await axios.post('http://localhost:4005/getUserData', {});
+        const response = await axios.post('http://153.92.5.18:4005/getUserData', {});
         setOriginalData(response.data);
         updateDropdownOptions(response.data, {});
         setAccounts(response.data); 

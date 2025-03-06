@@ -13,7 +13,7 @@ export default function ProfileUser() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch("http://localhost:4005/getUserDataByNIK", {
+                const response = await fetch("http://153.92.5.18:4005/getUserDataByNIK", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export default function ProfileUser() {
     useEffect(() => {
         const fetchProvinces = async () => {
             try {
-                const response = await axios.get("http://localhost:4005/getProvinces");
+                const response = await axios.get("http://153.92.5.18:4005/getProvinces");
                 setProvincesData(response.data);
             } catch (err) {
                 setError("Error fetching provinces data");
@@ -74,7 +74,7 @@ export default function ProfileUser() {
 
         if (province_id) {
             try {
-                const response = await axios.get("http://localhost:4005/getKabKota", {
+                const response = await axios.get("http://153.92.5.18:4005/getKabKota", {
                     params: { province_id },
                 });
                 setKabKotaData(response.data);
@@ -97,7 +97,7 @@ export default function ProfileUser() {
 
         if (kabKotaId) {
             try {
-                const response = await axios.post("http://localhost:4005/getKecamatan", {
+                const response = await axios.post("http://153.92.5.18:4005/getKecamatan", {
                     KabKotaId: kabKotaId,
                 });
                 setKecamatanData(response.data);
@@ -120,7 +120,7 @@ export default function ProfileUser() {
 
         if (kecamatanId) {
             try {
-                const response = await axios.post("http://localhost:4005/getDesa", {
+                const response = await axios.post("http://153.92.5.18:4005/getDesa", {
                     KecamatanId: kecamatanId,
                 });
                 setDesaData(response.data);
@@ -142,7 +142,7 @@ export default function ProfileUser() {
 
     const handleUpdate = async () => {
         try {
-            const response = await axios.put("http://localhost:4005/updateUserData", {
+            const response = await axios.put("http://153.92.5.18:4005/updateUserData", {
                 ...formData,
             });
 

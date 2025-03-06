@@ -25,7 +25,7 @@ export default function StatusPekerjaan() {
                     throw new Error('NIK is not found in localStorage');
                 }
 
-                const response = await fetch(`http://localhost:4005/getStatusPekerjaan?NIK=${nik}`);
+                const response = await fetch(`http://153.92.5.18:4005/getStatusPekerjaan?NIK=${nik}`);
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');

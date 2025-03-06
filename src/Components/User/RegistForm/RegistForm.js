@@ -54,7 +54,7 @@ export default function RegistForm() {
     useEffect(() => {
         const fetchProvinces = async () => {
             try {
-                const response = await axios.get('http://localhost:4005/getProvinces');
+                const response = await axios.get('http://153.92.5.18:4005/getProvinces');
                 setProvincesData(response.data);
             } catch (err) {
                 setError('Error fetching provinces data');
@@ -80,7 +80,7 @@ export default function RegistForm() {
 
         if (province_id) {
             try {
-                const response = await axios.get('http://localhost:4005/getKabKota', {
+                const response = await axios.get('http://153.92.5.18:4005/getKabKota', {
                     params: { province_id }
                 });
                 setKabKotaData(response.data);
@@ -104,7 +104,7 @@ export default function RegistForm() {
 
         if (kabKotaId) {
             try {
-                const response = await axios.post('http://localhost:4005/getKecamatan', {
+                const response = await axios.post('http://153.92.5.18:4005/getKecamatan', {
                     KabKotaId: kabKotaId
                 });
                 setKecamatanData(response.data);
@@ -127,7 +127,7 @@ export default function RegistForm() {
 
         if (kecamatanId) {
             try {
-                const response = await axios.post('http://localhost:4005/getDesa', {
+                const response = await axios.post('http://153.92.5.18:4005/getDesa', {
                     KecamatanId: kecamatanId
                 });
                 setDesaData(response.data);
@@ -208,7 +208,7 @@ export default function RegistForm() {
 
             // Kirim data ke API
             const response = await axios.post(
-                'http://localhost:4005/registUser',
+                'http://153.92.5.18:4005/registUser',
                 formData,
                 {
                     headers: { 'Content-Type': 'application/json' },
@@ -296,7 +296,7 @@ export default function RegistForm() {
 
 
                 // Kirim data ke API Insert Riwayat Pekerjaan
-                const response = await fetch("http://localhost:4005/insertRiwayatPekerjaan", {
+                const response = await fetch("http://153.92.5.18:4005/insertRiwayatPekerjaan", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -326,7 +326,7 @@ export default function RegistForm() {
 
             if (dokumenTambahan.dokumen) uploadData.append("dokumen", dokumenTambahan.dokumen);
 
-            const responseDokumenTambahan = await fetch("http://localhost:4005/uploadDokumen", {
+            const responseDokumenTambahan = await fetch("http://153.92.5.18:4005/uploadDokumen", {
                 method: "POST",
                 body: uploadData,
             });
@@ -343,7 +343,7 @@ export default function RegistForm() {
                 return;
             }
 
-            const responseLogin = await axios.post("http://localhost:4005/login", {
+            const responseLogin = await axios.post("http://153.92.5.18:4005/login", {
                 nik,
                 password,
             });
@@ -372,7 +372,7 @@ export default function RegistForm() {
         }
 
         try {
-            const responseLogin = await axios.post("http://localhost:4005/login", {
+            const responseLogin = await axios.post("http://153.92.5.18:4005/login", {
                 nik,
                 password,
             });

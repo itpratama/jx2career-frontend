@@ -22,7 +22,7 @@ export default function JobVacanciesList() {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const response = await axios.get('http://localhost:4005/getJobVacancies');
+                const response = await axios.get('http://153.92.5.18:4005/getJobVacancies');
                 setOriginalData(response.data);
                 updateDropdownOptions(response.data, {});
                 setVacancies(response.data);
@@ -137,7 +137,7 @@ export default function JobVacanciesList() {
                 return acc;
             }, {});
 
-            await axios.post('http://localhost:4005/addJobVacancy', mappedVacancy);
+            await axios.post('http://153.92.5.18:4005/addJobVacancy', mappedVacancy);
             alert('Lowongan pekerjaan berhasil ditambahkan!');
             setShowModal(false);
             setNewVacancy({
@@ -169,7 +169,7 @@ export default function JobVacanciesList() {
 
     const confirmDelete = async () => {
         try {
-            const response = await fetch('http://localhost:4005/deleteJobvacancy', {
+            const response = await fetch('http://153.92.5.18:4005/deleteJobvacancy', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ JobId: jobIdToDelete }),
@@ -197,7 +197,7 @@ export default function JobVacanciesList() {
 
     const handleUpdateClosingDate = async (jobId, newClosingDate) => {
         try {
-            const response = await axios.post('http://localhost:4005/updateClosingDate', {
+            const response = await axios.post('http://153.92.5.18:4005/updateClosingDate', {
                 JobId: jobId,
                 ClosingDate: newClosingDate
             });
