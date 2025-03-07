@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import axios from 'axios';
-import Logo from "../../../Assets/img/PratamaLogoBlack.png";
+import Logo from "../../../Assets/img/PratamaLogo.png";
 
 const Login = () => {
   const [nik, setNik] = useState('');
@@ -63,7 +63,7 @@ const Login = () => {
       {/* Login Form Container - Card for desktop, no card for mobile */}
       <div className={`relative z-10 w-full ${isMobile ? 'max-w-full p-6' : 'max-w-xl bg-white p-12 rounded-xl shadow-lg border border-orange-100'}`}>
         <div className="text-center mb-8">
-          <img className="mx-auto h-24 w-64" src={Logo} alt="Your Company" />
+          <img className="mx-auto h-24 w-60" src={Logo} alt="Your Company" />
           <h2 className={`mt-4 ${isMobile ? 'text-gray-800' : 'text-gray-800'} text-2xl font-bold`}>Sign in to your account</h2>
           <p className="mt-2 text-orange-500 text-sm">Enter your credentials to continue</p>
         </div>

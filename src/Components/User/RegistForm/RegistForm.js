@@ -1,402 +1,48 @@
-import axios from 'axios';
-import React, { Fragment, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { Dialog, Transition } from '@headlessui/react'
+// RegistForm.js
+import React from 'react';
+import { useRegistForm } from './useRegistForm';
+import { RegistFormModal } from './RegistFormModal';
 import { CheckIcon, EyeSlashIcon, EyeIcon } from '@heroicons/react/24/outline'
-
 export default function RegistForm() {
-    const [open, setOpen] = useState(false)
-    const navigate = useNavigate();
-    const [openerrorMessage, setOpensetErrorMessage] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-
-    const [formData, setFormData] = useState({
-        NIK: '',
-        NamaLengkap: '',
-        JenisKelamin: '',
-        AlamatLengkap: '',
-        KabKota: '',
-        Provinsi: '',
-        AlamatDomisili: '',
-        PendidikanTerakhir: '',
-        NamaSekolah: '',
-        Jurusan: '',
-        NoHandphone: '',
-        Email: '',
-        Skill: '',
-        Password: '',
-        KodePos: '',
-        TanggalLahir: '',
-        NOKK: '',
-        TempatLahir: '',
-        Agama: '',
-        NoHandphone2: '',
-        Kewarganegaraan: '',
-        RT: '',
-        RW: '',
-        Kecamatan: '',
-        Desa: '',
-        StatusPernikahan: '',
-        CatatanDisabilitas: '',
-        Fakultas: '',
-        ageBelow18: false, // Tambahkan properti ini
-    });
-
-    const [error, setError] = useState(null);
-    const [provincesData, setProvincesData] = useState([]);
-    const [kabKotaData, setKabKotaData] = useState([]);
-    const [kecamatanData, setKecamatanData] = useState([]);
-    const [desaData, setDesaData] = useState([]);
-
-    // Fetch data untuk Provinsi
-    useEffect(() => {
-        const fetchProvinces = async () => {
-            try {
-                const response = await axios.get('http://153.92.5.18:4005/getProvinces');
-                setProvincesData(response.data);
-            } catch (err) {
-                setError('Error fetching provinces data');
-                console.error(err);
-            }
-        };
-        fetchProvinces();
-    }, []);
-
-    // Handle perubahan input
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({ ...formData, [name]: value });
-    };
-
-    const handleProvinceChange = async (event) => {
-        const provinceName = event.target.value;
-
-        const selectedProvince = provincesData.find((province) => province.name === provinceName);
-        const province_id = selectedProvince ? selectedProvince.id : null;
-
-        setFormData({ ...formData, Provinsi: provinceName, KabKota: '', Kecamatan: '' });
-
-        if (province_id) {
-            try {
-                const response = await axios.get('http://153.92.5.18:4005/getKabKota', {
-                    params: { province_id }
-                });
-                setKabKotaData(response.data);
-            } catch (err) {
-                setError('Error fetching kabupaten/kota data');
-                console.error(err);
-            }
-        } else {
-            setKabKotaData([]);
-        }
-    };
-
-    // Handle perubahan Kabupaten/Kota
-    const handleKabKotaChange = async (event) => {
-        const kabKotaName = event.target.value;
-
-        const selectedKabKota = kabKotaData.find((kabkota) => kabkota.name === kabKotaName);
-        const kabKotaId = selectedKabKota ? selectedKabKota.id : null;
-
-        setFormData({ ...formData, KabKota: kabKotaName, Kecamatan: '' });
-
-        if (kabKotaId) {
-            try {
-                const response = await axios.post('http://153.92.5.18:4005/getKecamatan', {
-                    KabKotaId: kabKotaId
-                });
-                setKecamatanData(response.data);
-            } catch (err) {
-                setError('Error fetching kecamatan data');
-                console.error(err);
-            }
-        } else {
-            setKecamatanData([]);
-        }
-    };
-
-    const handleKecamatanChange = async (event) => {
-        const kecamatanName = event.target.value;
-
-        const selectedKecamatan = kecamatanData.find((kecamatan) => kecamatan.NamaKecamatan === kecamatanName);
-        const kecamatanId = selectedKecamatan ? selectedKecamatan.id : null;
-
-        setFormData({ ...formData, Kecamatan: kecamatanName, Desa: '' });
-
-        if (kecamatanId) {
-            try {
-                const response = await axios.post('http://153.92.5.18:4005/getDesa', {
-                    KecamatanId: kecamatanId
-                });
-                setDesaData(response.data);
-            } catch (err) {
-                setError('Error fetching desa data');
-                console.error(err);
-            }
-        } else {
-            setDesaData([]);
-        }
-    };
-
-    const handleCheckboxChange = (value) => {
-        let selectedOptions = formData.CatatanDisabilitas ? formData.CatatanDisabilitas.split(',') : [];
-
-        if (selectedOptions.includes(value)) {
-            selectedOptions = selectedOptions.filter((item) => item !== value);
-            if (value === "Lainnya") {
-                setFormData({ ...formData, Lainnya: "", CatatanDisabilitas: selectedOptions.join(',') });
-            } else {
-                setFormData({ ...formData, CatatanDisabilitas: selectedOptions.join(',') });
-            }
-        } else {
-            selectedOptions.push(value);
-            setFormData({ ...formData, CatatanDisabilitas: selectedOptions.join(',') });
-        }
-    };
-
-    const handleLainnyaChange = (e) => {
-        const { value } = e.target;
-        setFormData({
-            ...formData,
-            Lainnya: value,
-            CatatanDisabilitas: formData.CatatanDisabilitas.includes("Lainnya")
-                ? formData.CatatanDisabilitas
-                : `${formData.CatatanDisabilitas},Lainnya`
-        });
-    };
-
-    const handleRadioChange = (value) => {
-        let updatedValues = formData.CatatanDisabilitas.split(',').filter(
-            (item) => !item.startsWith("Menggunakan Alat Bantu")
-        );
-        updatedValues.push(value);
-        setFormData({
-            ...formData,
-            CatatanDisabilitas: updatedValues.join(','),
-        });
-    };
-
-    const checkAge = (tanggalLahir) => {
-        const today = new Date();
-        const birthDate = new Date(tanggalLahir);
-        let age = today.getFullYear() - birthDate.getFullYear();
-        const monthDiff = today.getMonth() - birthDate.getMonth();
-
-        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-            age--;
-        }
-
-        // Perbarui state dengan properti ageBelow18
-        setFormData((prev) => ({
-            ...prev,
-            TanggalLahir: tanggalLahir, // Pastikan tanggal lahir diperbarui juga
-            ageBelow18: age < 18,
-        }));
-    };
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            // Format tanggal lahir jika ada
-            if (formData.TanggalLahir) {
-                const tanggal = new Date(formData.TanggalLahir);
-                formData.TanggalLahir = tanggal.toISOString().split('T')[0]; // Format YYYY-MM-DD
-            }
-
-            // Kirim data ke API
-            const response = await axios.post(
-                'http://153.92.5.18:4005/registUser',
-                formData,
-                {
-                    headers: { 'Content-Type': 'application/json' },
-                }
-            );
-
-            // Tampilkan modal sukses jika berhasil
-            if (response.status === 200) {
-                setErrorMessage(''); // Reset pesan error
-                setOpen(true); // Tampilkan modal sukses
-            }
-        } catch (err) {
-            // Tangani respons kesalahan dari API
-            if (err.response) {
-                const errorMessage = err.response.data.message || 'Terjadi kesalahan saat registrasi.';
-                setErrorMessage(errorMessage); // Simpan pesan error
-            } else {
-                setErrorMessage('Terjadi kesalahan saat registrasi.'); // Simpan pesan default
-            }
-            setOpensetErrorMessage(true); // Tampilkan modal
-        }
-    };
-
-    const [riwayatPekerjaanRows, setRiwayatPekerjaanRows] = useState([{}]); // Array of rows for the table
-
-    const addRow = () => {
-        setRiwayatPekerjaanRows([...riwayatPekerjaanRows, {}]); // Add a new row to the table
-    };
-
-    // Modifikasi Input Row Riwayat Pekerjaan untuk mendukung pengisian data
-    const handleRiwayatPekerjaanChange = (index, field, value) => {
-        const updatedRows = [...riwayatPekerjaanRows];
-        updatedRows[index] = { ...updatedRows[index], [field]: value };
-        setRiwayatPekerjaanRows(updatedRows);
-    };
-
-    const [dokumenTambahan, setDokumenTambahan] = useState({ dokumen: null });
-    const [fileErrorDokumenTambahan, setFileErrorDokumenTambahan] = useState("");
-
-    const handleFileChangeDokumenTambahan = (e, type) => {
-        const file = e.target.files[0];
-
-        // Validasi tipe file
-        const allowedTypes = ["application/pdf"];
-        if (file && !allowedTypes.includes(file.type)) {
-            const errorMessage = "Hanya file dengan format PDF yang diperbolehkan.";
-            if (type === "dokumen") setFileErrorDokumenTambahan(errorMessage);
-
-            // Reset dokumenTambahan if the file is not a PDF
-            setDokumenTambahan({ dokumen: null });
-            return;
-        }
-
-        // Validasi ukuran file
-        if (file && file.size > 2 * 1024 * 1024) {
-            const errorMessage = "Ukuran file melebihi 2MB. Silakan unggah file yang lebih kecil.";
-            if (type === "dokumen") setFileErrorDokumenTambahan(errorMessage);
-            // Reset dokumenTambahan if the file is not a 2MB
-            setDokumenTambahan({ dokumen: null });
-            return;
-        }
-
-        // Reset error dan set file ke state
-        if (type === "dokumen") setFileErrorDokumenTambahan(null);
-
-        setDokumenTambahan((prevState) => ({
-            ...prevState,
-            [type]: file,
-        }));
-    };
-
-
-    const handleSubmitDokumenTambahan = async () => {
-        const nik = formData.NIK;
-
-        if (!nik) {
-            alert("NIK wajib diisi!");
-            return;
-        }
-
-        try {
-            // 1. Kirim data Riwayat Pekerjaan ke API
-            for (const row of riwayatPekerjaanRows) {
-                const { NamaPerusahaan, Jabatan, Departemen, MulaiKerja, TerakhirKerja } = row;
-
-
-                // Kirim data ke API Insert Riwayat Pekerjaan
-                const response = await fetch("http://153.92.5.18:4005/insertRiwayatPekerjaan", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        NIK: nik,
-                        NamaPerusahaan,
-                        Jabatan,
-                        Departemen,
-                        MulaiKerja,
-                        TerakhirKerja,
-                    }),
-                });
-
-                if (!response.ok) {
-                    throw new Error("Gagal menyimpan riwayat pekerjaan");
-                }
-            }
-
-            // Gunakan nama variabel yang berbeda untuk FormData
-            const uploadData = new FormData();
-            uploadData.append("nik", nik);
-
-            if (!dokumenTambahan.dokumen) {
-                setFileErrorDokumenTambahan("Dokumen wajib diunggah!");
-                return; // Menghentikan proses jika tidak ada dokumen
-            }
-
-
-            if (dokumenTambahan.dokumen) uploadData.append("dokumen", dokumenTambahan.dokumen);
-
-            const responseDokumenTambahan = await fetch("http://153.92.5.18:4005/uploadDokumen", {
-                method: "POST",
-                body: uploadData,
-            });
-
-            if (!responseDokumenTambahan.ok) {
-                throw new Error("Gagal menyimpan dokumen.");
-            }
-
-            // 3. Login setelah data berhasil disimpan
-            const password = formData.Password;
-
-            if (!nik || !password) {
-                alert("NIK dan Password wajib diisi untuk login!");
-                return;
-            }
-
-            const responseLogin = await axios.post("http://153.92.5.18:4005/login", {
-                nik,
-                password,
-            });
-            console.log(responseLogin.data);
-
-            // If login is successful, save token and nik to localStorage
-            const { user } = responseLogin.data;
-            const { token } = responseLogin.data;
-            Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'Strict' });
-            localStorage.setItem('nikJX2Career', user.id); // Save NIK
-
-            window.location.href = "/";
-        } catch (error) {
-            console.error("Error:", error);
-            alert("Terjadi kesalahan saat menyimpan data. Silakan coba lagi.");
-        }
-    };
-
-    const handleLewati = async () => {
-        const nik = formData.NIK;
-        const password = formData.Password;
-
-        if (!nik || !password) {
-            alert("NIK dan Password wajib diisi untuk login!");
-            return;
-        }
-
-        try {
-            const responseLogin = await axios.post("http://153.92.5.18:4005/login", {
-                nik,
-                password,
-            });
-            console.log(responseLogin.data);
-
-            // If login is successful, save token and nik to localStorage
-            const { user } = responseLogin.data;
-            const { token } = responseLogin.data;
-            Cookies.set('token', token, { expires: 7, secure: true, sameSite: 'Strict' });
-            localStorage.setItem('nikJX2Career', user.id); // Save NIK
-
-            window.location.href = "/";
-        } catch (error) {
-            console.error(error);
-            alert("Terjadi kesalahan saat login. Coba lagi.");
-        }
-    };
+    const {
+        formData,
+        setFormData,
+        error,
+        provincesData,
+        kabKotaData,
+        kecamatanData,
+        desaData,
+        open,
+        errorMessage,
+        showPassword,
+        riwayatPekerjaanRows,
+        dokumenTambahan,
+        fileErrorDokumenTambahan,
+        handleChange,
+        handleProvinceChange,
+        handleKabKotaChange,
+        handleKecamatanChange,
+        handleCheckboxChange,
+        handleLainnyaChange,
+        handleRadioChange,
+        checkAge,
+        handleSubmit,
+        addRow,
+        handleRiwayatPekerjaanChange,
+        handleFileChangeDokumenTambahan,
+        handleSubmitDokumenTambahan,
+        handleLewati,
+        setOpen,
+        setErrorMessage,
+        setShowPassword,
+    } = useRegistForm();
 
     return (
         <>
             <div className="bg-white py-32 sm:py-32">
                 <div className="bg-gray-50 min-h-screen flex items-center justify-center py-3">
                     <div className="w-full max-w-7xl bg-white p-6 rounded-lg shadow-md">
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                             <div className="space-y-4">
                                 <h2 className="text-lg font-semibold text-gray-900 text-center">REGISTRATION FORM</h2>
                                 <p className="text-sm text-gray-600 text-center">
@@ -1061,253 +707,21 @@ export default function RegistForm() {
                             </div>
                         </form>
                     </div>
-                </div >
-            </div >
-            <Transition.Root show={open} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={setOpen}>
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
-                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                    </Transition.Child>
-
-                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                            <Transition.Child
-                                as={Fragment}
-                                enter="ease-out duration-300"
-                                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                enterTo="opacity-100 translate-y-0 sm:scale-100"
-                                leave="ease-in duration-200"
-                                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-xl bg-white px-4 pb-6 pt-6 text-left shadow-xl transition-all w-full max-w-full sm:my-8 sm:max-w-6xl sm:p-8">
-                                    <div>
-                                        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-orange-100">
-                                            <CheckIcon className="h-7 w-7 text-orange-500" aria-hidden="true" />
-                                        </div>
-                                        <div className="mt-4 text-center">
-                                            <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-800">
-                                                Registrasi Berhasil
-                                            </Dialog.Title>
-                                            <div className="mt-2">
-                                                <p className="text-sm text-gray-600">
-                                                    Mohon lengkapi formulir tambahan di bawah ini untuk membantu kami memahami potensi Anda secara lebih mendalam.
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="mt-8">
-                                        <label className="block text-sm font-medium text-gray-700 mb-3">Riwayat Pekerjaan (Jika ada)</label>
-                                        <div className="overflow-x-auto -mx-4 sm:-mx-6 lg:-mx-8">
-                                            <div className="inline-block min-w-full py-2 align-middle px-4 sm:px-6 lg:px-8">
-                                                <div className="overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
-                                                    <table className="min-w-full divide-y divide-orange-100">
-                                                        <thead className="bg-orange-50">
-                                                            <tr>
-                                                                <th scope="col" className="py-3 pl-4 pr-3 text-left text-sm font-medium text-gray-700 sm:pl-6">Nama Perusahaan</th>
-                                                                <th scope="col" className="px-3 py-3 text-left text-sm font-medium text-gray-700">Departemen</th>
-                                                                <th scope="col" className="px-3 py-3 text-left text-sm font-medium text-gray-700">Jabatan</th>
-                                                                <th scope="col" className="px-3 py-3 text-left text-sm font-medium text-gray-700">Mulai Kerja</th>
-                                                                <th scope="col" className="px-3 py-3 text-left text-sm font-medium text-gray-700">Terakhir Kerja</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody className="divide-y divide-orange-100 bg-white">
-                                                            {riwayatPekerjaanRows.map((row, index) => (
-                                                                <tr key={index}>
-                                                                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-sm sm:pl-6">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
-                                                                            value={row.NamaPerusahaan || ""}
-                                                                            onChange={(e) =>
-                                                                                handleRiwayatPekerjaanChange(index, "NamaPerusahaan", e.target.value)
-                                                                            }
-                                                                        />
-                                                                    </td>
-                                                                    <td className="whitespace-nowrap px-3 py-3 text-sm">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
-                                                                            value={row.Departemen || ""}
-                                                                            onChange={(e) =>
-                                                                                handleRiwayatPekerjaanChange(index, "Departemen", e.target.value)
-                                                                            }
-                                                                        />
-                                                                    </td>
-                                                                    <td className="whitespace-nowrap px-3 py-3 text-sm">
-                                                                        <input
-                                                                            type="text"
-                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
-                                                                            value={row.Jabatan || ""}
-                                                                            onChange={(e) =>
-                                                                                handleRiwayatPekerjaanChange(index, "Jabatan", e.target.value)
-                                                                            }
-                                                                        />
-                                                                    </td>
-                                                                    <td className="whitespace-nowrap px-3 py-3 text-sm">
-                                                                        <input
-                                                                            type="date"
-                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
-                                                                            value={row.MulaiKerja || ""}
-                                                                            onChange={(e) =>
-                                                                                handleRiwayatPekerjaanChange(index, "MulaiKerja", e.target.value)
-                                                                            }
-                                                                        />
-                                                                    </td>
-                                                                    <td className="whitespace-nowrap px-3 py-3 text-sm">
-                                                                        <input
-                                                                            type="date"
-                                                                            className="w-full border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
-                                                                            value={row.TerakhirKerja || ""}
-                                                                            onChange={(e) =>
-                                                                                handleRiwayatPekerjaanChange(index, "TerakhirKerja", e.target.value)
-                                                                            }
-                                                                        />
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <button
-                                            type="button"
-                                            className="mt-3 inline-flex items-center text-orange-500 hover:text-orange-600 text-sm font-medium"
-                                            onClick={addRow}
-                                        >
-                                            <span className="mr-2">+</span> Tambah Baris
-                                        </button>
-                                    </div>
-                                    <div className="mt-8">
-                                        <div className="mb-4">
-                                            <label className="block text-sm font-medium text-gray-700 mb-2">Upload Dokumen Ijazah - CV - Paklaring - Sertifikat</label>
-                                            <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-orange-100 border-dashed rounded-lg">
-                                                <div className="space-y-1 text-center">
-                                                    <svg className="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                                    </svg>
-                                                    <div className="flex flex-col sm:flex-row justify-center text-sm text-gray-600">
-                                                        <label htmlFor="file-upload" className="relative cursor-pointer rounded-md font-medium text-orange-500 hover:text-orange-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-orange-400">
-                                                            <span>Upload file</span>
-                                                            <input
-                                                                id="file-upload"
-                                                                name="file-upload"
-                                                                type="file"
-                                                                className="sr-only"
-                                                                accept=".pdf"
-                                                                onChange={(e) => handleFileChangeDokumenTambahan(e, 'dokumen')}
-                                                            />
-                                                        </label>
-                                                        <p className="pl-1 mt-1 sm:mt-0">atau drag dan drop</p>
-                                                    </div>
-                                                    <p className="text-xs text-gray-500">PDF Maks 2MB</p>
-                                                </div>
-                                            </div>
-                                            {fileErrorDokumenTambahan && (
-                                                <p className="text-sm text-red-600 mt-2">{fileErrorDokumenTambahan}</p>
-                                            )}
-                                        </div>
-                                    </div>
-                                    <div className="mt-8 flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4">
-                                        <button
-                                            type="button"
-                                            className="w-full sm:w-auto px-5 py-2.5 rounded-md shadow-sm transition-all duration-200 font-medium text-sm bg-white text-gray-700 border border-orange-200 hover:bg-orange-50"
-                                            onClick={handleLewati}
-                                        >
-                                            Lewati
-                                        </button>
-                                        <button
-                                            type="button"
-                                            className="w-full sm:w-auto px-5 py-2.5 rounded-md shadow-sm transition-all duration-200 font-medium text-sm bg-gradient-to-r from-orange-400 to-orange-500 text-white hover:from-orange-500 hover:to-orange-600"
-                                            onClick={handleSubmitDokumenTambahan}
-                                        >
-                                            Kirim
-                                        </button>
-                                    </div>
-                                </Dialog.Panel>
-                            </Transition.Child>
-                        </div>
-                    </div>
-                </Dialog>
-            </Transition.Root>
-
-            <Transition.Root show={openerrorMessage} as={Fragment}>
-                <Dialog as="div" className="relative z-10" onClose={setOpen}>
-                    <Transition.Child
-                        as={Fragment}
-                        enter="ease-out duration-300"
-                        enterFrom="opacity-0"
-                        enterTo="opacity-100"
-                        leave="ease-in duration-200"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
-                        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                    </Transition.Child>
-
-                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                            <Transition.Child
-                                as={Fragment}
-                                enter="ease-out duration-300"
-                                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                                enterTo="opacity-100 translate-y-0 sm:scale-100"
-                                leave="ease-in duration-200"
-                                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                            >
-                                <Dialog.Panel className="relative transform overflow-hidden rounded-xl bg-white px-6 pb-6 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
-                                    <div>
-                                        <div className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full ${errorMessage ? 'bg-red-100' : 'bg-orange-100'}`}>
-                                            {errorMessage ? (
-                                                <svg className="h-7 w-7 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                                </svg>
-                                            ) : (
-                                                <CheckIcon className="h-7 w-7 text-orange-500" aria-hidden="true" />
-                                            )}
-                                        </div>
-                                        <div className="mt-4 text-center">
-                                            <Dialog.Title as="h3" className="text-lg font-semibold leading-6 text-gray-800">
-                                                {errorMessage ? 'Registrasi Gagal' : 'Registrasi Berhasil'}
-                                            </Dialog.Title>
-                                            <div className="mt-2">
-                                                <p className="text-sm text-gray-600">
-                                                    {errorMessage || 'Registrasi berhasil dilakukan. Silakan cek email untuk informasi lebih lanjut.'}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="mt-6">
-                                        <button
-                                            type="button"
-                                            className="inline-flex w-full justify-center rounded-md bg-gradient-to-r from-orange-400 to-orange-500 px-4 py-3 text-sm font-medium text-white shadow-sm hover:from-orange-500 hover:to-orange-600 transition-all duration-200"
-                                            onClick={() => {
-                                                setOpensetErrorMessage(false);
-                                                if (!errorMessage) {
-                                                    window.location.reload();
-                                                }
-                                            }}
-                                        >
-                                            {errorMessage ? 'Tutup' : 'Kembali'}
-                                        </button>
-                                    </div>
-                                </Dialog.Panel>
-                            </Transition.Child>
-                        </div>
-                    </div>
-                </Dialog>
-            </Transition.Root>
+                </div>
+            </div>
+            <RegistFormModal
+                open={open}
+                setOpen={setOpen}
+                errorMessage={errorMessage}
+                setErrorMessage={setErrorMessage}
+                riwayatPekerjaanRows={riwayatPekerjaanRows}
+                handleRiwayatPekerjaanChange={handleRiwayatPekerjaanChange}
+                addRow={addRow}
+                handleFileChangeDokumenTambahan={handleFileChangeDokumenTambahan}
+                handleSubmitDokumenTambahan={handleSubmitDokumenTambahan}
+                fileErrorDokumenTambahan={fileErrorDokumenTambahan}
+                handleLewati={handleLewati}
+            />
         </>
-
-    )
+    );
 }
