@@ -206,10 +206,34 @@ export const useRegistForm = () => {
                 setErrorMessage('');
                 setOpen(true);
             }
+
+            const nik = formData.NIK;
+
+            const uploadData = new FormData();
+            uploadData.append("nik", nik);
+
+            if (!dokumenTambahan.dokumen) {
+                setFileErrorDokumenTambahan("Dokumen wajib diunggah!");
+                return;
+            }
+
+            if (dokumenTambahan.dokumen) uploadData.append("dokumen", dokumenTambahan.dokumen);
+
+            const responseDokumenTambahan = await fetch("http://153.92.5.18:4005/uploadDokumen", {
+                method: "POST",
+                body: uploadData,
+            });
+
+            if (!responseDokumenTambahan.ok) {
+                throw new Error("Gagal menyimpan dokumen.");
+            }
+
+
         } catch (err) {
             if (err.response) {
                 const errorMessage = err.response.data.message || 'Terjadi kesalahan saat registrasi.';
                 setErrorMessage(errorMessage);
+                console.log(errorMessage);
             } else {
                 setErrorMessage('Terjadi kesalahan saat registrasi.');
             }
@@ -280,25 +304,6 @@ export const useRegistForm = () => {
                 if (!response.ok) {
                     throw new Error("Gagal menyimpan riwayat pekerjaan");
                 }
-            }
-
-            const uploadData = new FormData();
-            uploadData.append("nik", nik);
-
-            if (!dokumenTambahan.dokumen) {
-                setFileErrorDokumenTambahan("Dokumen wajib diunggah!");
-                return;
-            }
-
-            if (dokumenTambahan.dokumen) uploadData.append("dokumen", dokumenTambahan.dokumen);
-
-            const responseDokumenTambahan = await fetch("http://153.92.5.18:4005/uploadDokumen", {
-                method: "POST",
-                body: uploadData,
-            });
-
-            if (!responseDokumenTambahan.ok) {
-                throw new Error("Gagal menyimpan dokumen.");
             }
 
             const password = formData.Password;

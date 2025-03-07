@@ -59,7 +59,7 @@ export const RegistFormModal = ({
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div className="mt-8">
                                     <div className="flex justify-between items-center mb-3">
                                         <label className="block text-sm font-medium text-gray-700">Riwayat Pekerjaan (Jika ada)</label>
@@ -71,7 +71,7 @@ export const RegistFormModal = ({
                                             <PlusIcon className="w-4 h-4 mr-1" /> Tambah
                                         </button>
                                     </div>
-                                    
+
                                     {/* Desktop View - Table */}
                                     <div className="hidden md:block overflow-x-auto rounded-lg border border-orange-100 shadow-sm">
                                         <table className="min-w-full border-collapse">
@@ -145,13 +145,13 @@ export const RegistFormModal = ({
                                             </tbody>
                                         </table>
                                     </div>
-                                    
+
                                     {/* Mobile View - List */}
                                     <div className="md:hidden space-y-6">
                                         {riwayatPekerjaanRows.map((row, index) => (
                                             <div key={index} className="bg-white rounded-lg border border-orange-100 shadow-sm p-4">
                                                 <div className="text-xs font-medium text-orange-500 mb-2">Pengalaman #{index + 1}</div>
-                                                
+
                                                 <div className="space-y-3">
                                                     <div>
                                                         <label className="block text-xs font-medium text-gray-700 mb-1">Nama Perusahaan</label>
@@ -163,7 +163,7 @@ export const RegistFormModal = ({
                                                             placeholder="PT Example"
                                                         />
                                                     </div>
-                                                    
+
                                                     <div>
                                                         <label className="block text-xs font-medium text-gray-700 mb-1">Departemen</label>
                                                         <input
@@ -174,7 +174,7 @@ export const RegistFormModal = ({
                                                             placeholder="Human Resources"
                                                         />
                                                     </div>
-                                                    
+
                                                     <div>
                                                         <label className="block text-xs font-medium text-gray-700 mb-1">Jabatan</label>
                                                         <input
@@ -185,7 +185,7 @@ export const RegistFormModal = ({
                                                             placeholder="HR Manager"
                                                         />
                                                     </div>
-                                                    
+
                                                     <div className="grid grid-cols-2 gap-3">
                                                         <div>
                                                             <label className="block text-xs font-medium text-gray-700 mb-1">Mulai Kerja</label>
@@ -196,7 +196,7 @@ export const RegistFormModal = ({
                                                                 onChange={(e) => handleRiwayatPekerjaanChange(index, "MulaiKerja", e.target.value)}
                                                             />
                                                         </div>
-                                                        
+
                                                         <div>
                                                             <label className="block text-xs font-medium text-gray-700 mb-1">Terakhir Kerja</label>
                                                             <input
@@ -210,7 +210,7 @@ export const RegistFormModal = ({
                                                 </div>
                                             </div>
                                         ))}
-                                        
+
                                         {riwayatPekerjaanRows.length === 0 && (
                                             <div className="text-center py-6 bg-white rounded-lg border border-orange-100 shadow-sm">
                                                 <p className="text-sm text-gray-500">Belum ada riwayat pekerjaan. Tap tombol "Tambah" untuk menambahkan.</p>
@@ -218,32 +218,7 @@ export const RegistFormModal = ({
                                         )}
                                     </div>
                                 </div>
-                                
-                                <div className="mt-8">
-                                    <div className="rounded-lg border border-orange-100 bg-white p-6 shadow-sm">
-                                        <label className="block text-sm font-medium text-gray-700 mb-2">Upload Dokumen Ijazah - CV - Paklaring - Sertifikat</label>
-                                        <p className="text-xs text-gray-500 mb-4">Format file yang didukung: PDF (Maksimal 5MB)</p>
-                                        <div className="flex items-center justify-center w-full">
-                                            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-orange-200 border-dashed rounded-lg cursor-pointer bg-orange-50 hover:bg-orange-100 transition-colors duration-200">
-                                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                                    <DocumentTextIcon className="w-8 h-8 mb-3 text-orange-400" aria-hidden="true" />
-                                                    <p className="mb-1 text-sm text-gray-600"><span className="font-medium">Klik untuk unggah</span></p>
-                                                    <p className="text-xs text-gray-500">PDF (MAX. 5MB)</p>
-                                                </div>
-                                                <input 
-                                                    type="file" 
-                                                    className="hidden" 
-                                                    accept=".pdf"
-                                                    onChange={(e) => handleFileChangeDokumenTambahan(e, 'dokumen')}
-                                                />
-                                            </label>
-                                        </div>
-                                        {fileErrorDokumenTambahan && (
-                                            <p className="text-sm text-red-500 mt-2">{fileErrorDokumenTambahan}</p>
-                                        )}
-                                    </div>
-                                </div>
-                                
+
                                 <div className="mt-8 flex flex-col sm:flex-row sm:justify-end space-y-3 sm:space-y-0 sm:space-x-4">
                                     <button
                                         type="button"
