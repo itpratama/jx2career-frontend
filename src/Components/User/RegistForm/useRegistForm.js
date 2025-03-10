@@ -233,7 +233,7 @@ export const useRegistForm = () => {
             if (err.response) {
                 const errorMessage = err.response.data.message || 'Terjadi kesalahan saat registrasi.';
                 setErrorMessage(errorMessage);
-                console.log(errorMessage);
+                console.log("test",errorMessage);
             } else {
                 setErrorMessage('Terjadi kesalahan saat registrasi.');
             }
